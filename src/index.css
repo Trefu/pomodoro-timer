@@ -2,3 +2,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    body {
+        font-family: 'Bebas Neue', cursive;
+    }
+    .app-wrapper {
+       @apply  flex justify-center items-center text-center min-h-screen w-full
+    }
+
+    .btn-controllers {
+        @apply p-1 rounded-lg bg-yellow-700
+    }
+}
