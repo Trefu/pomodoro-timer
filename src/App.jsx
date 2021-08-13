@@ -1,56 +1,72 @@
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import { Controls } from './components/Controls';
 import { Timer } from './components/Timer';
 import { TimeSetter } from './components/TimeSetter';
 
 function App() {
-  const [time, setTime] = useState(25);
   const [sessionLength, setSessionLength] = useState(25);
   const [breakLength, setBreakLength] = useState(5);
+  const [time, setTime] = useState(25);
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [mode, setMode] = useState('session');
-  const [intervalTime, setIntervalTime] = useState(0);
   const [isActive, setIsActive] = useState(false);
-  const [inSession, setInSession] = useState(true);
+  let audioBeep = document.getElementById('beep');
+  const playStopTime = () => {
+    setIsActive(prevState => !prevState);
+  };
 
-  const playTime = () => {
+  const resetTime = () => {
+    setMode('session');
+    setIsActive(false);
+    setTimerSeconds(0)
+    setSessionLength(25);
+    setBreakLength(5);
+    setTime(25)
+    audioBeep.pause();
+    audioBeep.currentTime = 0;
+  };
+  const toggleSession = () => {
+    audioBeep.play();
+    setMode(mode === 'session' ? 'break' : 'session');
     setIsActive(true);
-  }
-
-  const pauseTime = () => {
-    setIsActive(false)
-  }
+  };
+  //Actualiza el minutero cuando se aumenta/reduce la session
   useEffect(() => {
-    const onToggleInterval = (inSession) => {
-      if (inSession) return setTime(sessionLength);
-      return setTime(breakLength)
-    }
-    const toggleSession = () => {
-      setInSession(prevState => !prevState)
-    }
-    const decreaseTimer = () => {
-      if (time === 0 && timerSeconds === 0) {
-        toggleSession()
-        return
-      }
-      if (timerSeconds === 0) {
-        setTimerSeconds(59);
-        return setTime(time - 1)
-      }
+    setTime(sessionLength)
+  }, [sessionLength]);
 
-      return setTimerSeconds(prevState => prevState - 1)
-    }
-
+  useEffect(() => {
+    if (mode === 'session') {
+      return setTime(sessionLength)
+    };
+    return setTime(breakLength)
+    // eslint-disable-next-line 
+  }, [mode])
+  useEffect(() => {
     let intervalId;
     if (isActive) {
+
+      const decreaseTimer = () => {
+        if (time === 0 && timerSeconds === 0 && isActive) {
+
+          setIsActive(false)
+          return toggleSession();
+        }
+        if (timerSeconds === 0) {
+          setTimerSeconds(59);
+          return setTime(time - 1)
+        }
+
+        return setTimerSeconds(prevState => prevState - 1)
+      }
       intervalId = setInterval(() => {
         decreaseTimer()
-        onToggleInterval()
       }, 1000);
     }
-    return () => clearInterval(intervalId)
-  }, [timerSeconds, isActive, time, inSession])
+    return () => clearInterval(intervalId);
+    // eslint-disable-next-line 
+  }, [timerSeconds, isActive, mode])
+
 
   return (
     <div className="app-wrapper bg-gray-800 text-yellow-300">
@@ -66,8 +82,9 @@ function App() {
         </div>
 
         <Timer currentMode={[mode, setMode]} currentTime={[timerSeconds, time]} />
-        <Controls values={[setIsActive, setInSession, pauseTime, playTime]} />
+        <Controls values={[playStopTime, resetTime]} />
       </div>
+
     </div>
   );
 }

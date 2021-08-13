@@ -1,31 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faStop, faPause } from '@fortawesome/free-solid-svg-icons'
 export const Controls = ({ values }) => {
-    const [setIsActive, setInSession, pauseTime, playTime] = values
-    const play = () => {
-        playTime()
-    };
-    const pause = () => {
-        pauseTime()
-    }
-    const reset = () => {
-        console.log('reset')
-    }
-    const test = () => {
-        console.log('test')
-    }
-    return (
-        <div className='flex justify-between items-center mt-8 ml-4 '>
-            <div id='start_stop'>
-                <button className='mr-4 text-2xl p-1' onClick={play}   >
-                    <FontAwesomeIcon icon={faPlay} />
-                </button>
-                <button className='mr-4 text-2xl p-1' onClick={pause}>
-                    <FontAwesomeIcon icon={faPause} />
-                </button>
+    const [playStopTime, resetTime] = values
 
-            </div>
-            <button id='reset' className='mr-4 text-2xl p-1' onClick={reset}>
+    return (
+        <div className='flex  mt-8  '>
+
+            <button id='start_stop' className='mr-4 text-2xl p-1' onClick={() => playStopTime()}   >
+                <FontAwesomeIcon className='mr-1' icon={faPlay} />
+                <FontAwesomeIcon icon={faPause} />
+            </button>
+
+
+            <button id='reset' className='mr-4 text-2xl p-1' onClick={() => resetTime()}>
                 <FontAwesomeIcon icon={faStop} />
             </button>
         </div>
