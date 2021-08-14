@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Controls } from './components/Controls';
 import { Timer } from './components/Timer';
 import { TimeSetter } from './components/TimeSetter';
@@ -6,11 +6,11 @@ import { TimeSetter } from './components/TimeSetter';
 function App() {
   const [sessionLength, setSessionLength] = useState(25);
   const [breakLength, setBreakLength] = useState(5);
-  const [time, setTime] = useState(25);
+  const [timerMinutes, setTimerMinutes] = useState(25);
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [mode, setMode] = useState('session');
   const [isActive, setIsActive] = useState(false);
-  let audioBeep = document.getElementById('beep');
+  const audioBeep = useRef()
   const playStopTime = () => {
     setIsActive(prevState => !prevState);
   };
@@ -21,51 +21,55 @@ function App() {
     setTimerSeconds(0)
     setSessionLength(25);
     setBreakLength(5);
-    setTime(25)
-    audioBeep.pause();
-    audioBeep.currentTime = 0;
+    setTimerMinutes(25)
+    audioBeep.current.pause();
+    audioBeep.current.currentTime = 0;
   };
   const toggleSession = () => {
-    audioBeep.play();
     setMode(mode === 'session' ? 'break' : 'session');
     setIsActive(true);
   };
+
+  const decreaseTimer = () => {
+    if (timerSeconds === 0) {
+      if (timerMinutes === 0) {
+        audioBeep.current.currentTime = 0;
+        audioBeep.current.play();
+        setIsActive(false)
+        return toggleSession();
+      }
+      setTimerSeconds(59);
+      return setTimerMinutes(prevState => prevState - 1)
+    }
+
+    return setTimerSeconds(prevState => prevState - 1)
+  }
   //Actualiza el minutero cuando se aumenta/reduce la session
   useEffect(() => {
-    setTime(sessionLength)
+    setTimerMinutes(sessionLength)
   }, [sessionLength]);
 
   useEffect(() => {
     if (mode === 'session') {
-      return setTime(sessionLength)
+      return setTimerMinutes(sessionLength)
     };
-    return setTime(breakLength)
+    return setTimerMinutes(breakLength)
     // eslint-disable-next-line 
   }, [mode])
+
   useEffect(() => {
     let intervalId;
     if (isActive) {
-
-      const decreaseTimer = () => {
-        if (time === 0 && timerSeconds === 0 && isActive) {
-
-          setIsActive(false)
-          return toggleSession();
-        }
-        if (timerSeconds === 0) {
-          setTimerSeconds(59);
-          return setTime(time - 1)
-        }
-
-        return setTimerSeconds(prevState => prevState - 1)
-      }
       intervalId = setInterval(() => {
         decreaseTimer()
-      }, 1000);
+      }, 1);
     }
     return () => clearInterval(intervalId);
     // eslint-disable-next-line 
   }, [timerSeconds, isActive, mode])
+
+
+
 
 
   return (
@@ -81,10 +85,11 @@ function App() {
 
         </div>
 
-        <Timer currentMode={[mode, setMode]} currentTime={[timerSeconds, time]} />
+        <Timer currentMode={[mode, setMode]} currentTime={[timerSeconds, timerMinutes]} />
         <Controls values={[playStopTime, resetTime]} />
       </div>
-
+      <audio id="beep" preload="auto" ref={audioBeep}
+        src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav" />
     </div>
   );
 }
