@@ -62,7 +62,7 @@ function App() {
     if (isActive) {
       intervalId = setInterval(() => {
         decreaseTimer()
-      }, 1);
+      }, 1000);
     }
     return () => clearInterval(intervalId);
     // eslint-disable-next-line 
