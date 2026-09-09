@@ -226,11 +226,15 @@ function App() {
 
     const handleToggleTask = (id) => {
         setTasks((prev) => {
-            const updated = prev.map((task) =>
-                task.id === id
-                    ? { ...task, done: !task.done, completed: !task.done ? task.estimated : 0 }
-                    : task
-            );
+            const updated = prev.map((task) => {
+                if (task.id !== id) return task;
+                const newDone = !task.done;
+                return {
+                    ...task,
+                    done: newDone,
+                    completed: newDone ? task.completed : 0
+                };
+            });
             return advanceActiveIfNeeded(updated, id);
         });
     };

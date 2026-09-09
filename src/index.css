@@ -512,6 +512,21 @@ a {
     background: rgba(244, 242, 236, 0.02);
 }
 
+.active-task-card.is-done {
+    opacity: 0.85;
+}
+
+.active-task-card.is-done .active-task-text {
+    text-decoration: line-through;
+    text-decoration-color: var(--mode-color);
+    text-decoration-thickness: 1px;
+}
+
+.active-task-card.is-done .active-task-progress span {
+    background: var(--mode-color);
+    opacity: 0.55;
+}
+
 .active-task-card.is-empty {
     border-style: dashed;
     border-color: rgba(244, 242, 236, 0.14);

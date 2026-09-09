@@ -61,9 +61,11 @@ export const ActiveTaskCard = ({ task, mode, cycle }) => {
                         <span className="active-task-remaining">
                             <FontAwesomeIcon icon={faStopwatch} aria-hidden="true" />
                             <span>
-                                {remaining > 0
-                                    ? t('active.task.remaining', { n: remaining })
-                                    : t('active.task.complete')}
+                                {task.done
+                                    ? (completed < task.estimated
+                                        ? t('active.task.complete.early', { done: completed, total: task.estimated })
+                                        : t('active.task.complete'))
+                                    : t('active.task.remaining', { n: remaining })}
                             </span>
                         </span>
                     </span>

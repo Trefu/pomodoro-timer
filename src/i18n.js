@@ -40,6 +40,7 @@ const translations = {
         'active.task.cycle': ({ n }) => `Pomodoros del ciclo ${String(n).padStart(2, '0')}`,
         'active.task.remaining': ({ n }) => `${n} ${n === 1 ? 'restante' : 'restantes'}`,
         'active.task.complete': 'Cumplida en este ciclo',
+        'active.task.complete.early': ({ done, total }) => `Finalizada antes: ${done} / ${total}`,
 
         'timer.footer.protocol': 'Protocolo',
         'timer.footer.transition': 'Enfoque → descanso',
@@ -129,6 +130,7 @@ const translations = {
         'active.task.cycle': ({ n }) => `Pomodoros in cycle ${String(n).padStart(2, '0')}`,
         'active.task.remaining': ({ n }) => `${n} left`,
         'active.task.complete': 'Goal met in this cycle',
+        'active.task.complete.early': ({ done, total }) => `Finished early: ${done} / ${total}`,
 
         'timer.footer.protocol': 'Protocol',
         'timer.footer.transition': 'Focus → break',
