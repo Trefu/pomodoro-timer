@@ -5,15 +5,17 @@
   <meta charset="utf-8" />
   <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Web site created using create-react-app" />
+  <meta name="theme-color" content="#0e1d2b" />
+  <meta name="description" content="Focus / 25 — an elegant Pomodoro timer for deliberate work." />
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-  <title>React App</title>
+  <title>Focus / 25 — Pomodoro Timer</title>
 </head>
 
 <body>
@@ -21,7 +23,30 @@
   <div id="root"></div>
 
   <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"></script>
+  <script>
+    (function () {
+      var closeTestSuite = function () {
+        var testSuiteToggle = document.getElementById('fcc_toggle');
+        if (testSuiteToggle && testSuiteToggle.checked) {
+          testSuiteToggle.click();
+        }
+      };
+
+      closeTestSuite();
+      window.addEventListener('load', closeTestSuite, { once: true });
+
+      var observer = new MutationObserver(function () {
+        var testSuiteToggle = document.getElementById('fcc_toggle');
+        if (testSuiteToggle && testSuiteToggle.checked) {
+          testSuiteToggle.click();
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.documentElement, { childList: true, subtree: true });
+
+      window.setTimeout(function () { observer.disconnect(); }, 8000);
+    })();
+  </script>
 </body>
 
 </html>
