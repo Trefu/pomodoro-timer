@@ -4,6 +4,7 @@ import { Timer } from './components/Timer';
 import { TaskList } from './components/TaskList';
 import { Presets } from './components/Presets';
 import { SettingsPanel, TogglesPanel } from './components/SettingsPanel';
+import { ActiveTaskCard } from './components/ActiveTaskCard';
 import { TranslationProvider, useTranslation } from './i18n';
 
 const STORAGE_KEY = 'focus25:v1';
@@ -274,6 +275,11 @@ function App() {
 
     const playStopTime = () => setIsActive((prev) => !prev);
 
+    const activeTask = useMemo(
+        () => tasks.find((task) => task.isActive && !task.done) || null,
+        [tasks]
+    );
+
     const resetTime = () => {
         setMode('session');
         setIsActive(false);
@@ -409,6 +415,8 @@ function App() {
                                     ? t('cycle.meta.session', { n: cycle, mins: sessionLength })
                                     : t('cycle.meta.break', { mins: breakLength })}
                             </p>
+
+                            <ActiveTaskCard task={activeTask} mode={mode} cycle={cycle} />
 
                             <Controls values={[playStopTime, resetTime]} isActive={isActive} />
                         </div>

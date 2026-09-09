@@ -31,6 +31,16 @@ const translations = {
         'cycle.meta.session': ({ n, mins }) => `Ciclo ${String(n).padStart(2, '0')} · Bloque de ${mins} min`,
         'cycle.meta.break': ({ mins }) => `Recuperación · Descanso de ${mins} min`,
 
+        'active.task.label': 'En foco',
+        'active.task.next.label': 'Próximo foco',
+        'active.task.none.label': 'Sin tarea activa',
+        'active.task.none.help': 'Elegí una de la lista para registrar pomodoros',
+        'active.task.aria.focus': ({ text }) => `Tarea activa: ${text}`,
+        'active.task.aria.break': ({ text }) => `Próximo foco: ${text}`,
+        'active.task.cycle': ({ n }) => `Pomodoros del ciclo ${String(n).padStart(2, '0')}`,
+        'active.task.remaining': ({ n }) => `${n} ${n === 1 ? 'restante' : 'restantes'}`,
+        'active.task.complete': 'Cumplida en este ciclo',
+
         'timer.footer.protocol': 'Protocolo',
         'timer.footer.transition': 'Enfoque → descanso',
 
@@ -109,6 +119,16 @@ const translations = {
 
         'cycle.meta.session': ({ n, mins }) => `Cycle ${String(n).padStart(2, '0')} · ${mins} min focus block`,
         'cycle.meta.break': ({ mins }) => `Recovery · ${mins} min break`,
+
+        'active.task.label': 'In focus',
+        'active.task.next.label': 'Next focus',
+        'active.task.none.label': 'No active task',
+        'active.task.none.help': 'Pick one from the list below to track progress',
+        'active.task.aria.focus': ({ text }) => `Active task: ${text}`,
+        'active.task.aria.break': ({ text }) => `Next focus: ${text}`,
+        'active.task.cycle': ({ n }) => `Pomodoros in cycle ${String(n).padStart(2, '0')}`,
+        'active.task.remaining': ({ n }) => `${n} left`,
+        'active.task.complete': 'Goal met in this cycle',
 
         'timer.footer.protocol': 'Protocol',
         'timer.footer.transition': 'Focus → break',
