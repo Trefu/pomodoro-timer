@@ -25,26 +25,44 @@
   <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
   <script>
     (function () {
-      var closeTestSuite = function () {
-        var testSuiteToggle = document.getElementById('fcc_toggle');
-        if (testSuiteToggle && testSuiteToggle.checked) {
-          testSuiteToggle.click();
+      var closed = false;
+
+      function closeTestSuite() {
+        if (closed) return true;
+        var toggle = document.getElementById('fcc_toggle');
+        if (!toggle) return false;
+        if (toggle.checked) {
+          closed = true;
+          return true;
         }
-      };
+        toggle.click();
+        if (toggle.checked) {
+          closed = true;
+          return true;
+        }
+        try {
+          toggle.checked = true;
+          toggle.dispatchEvent(new Event('change', { bubbles: true }));
+          closed = true;
+          return true;
+        } catch (err) {
+          return false;
+        }
+      }
 
       closeTestSuite();
       window.addEventListener('load', closeTestSuite, { once: true });
 
       var observer = new MutationObserver(function () {
-        var testSuiteToggle = document.getElementById('fcc_toggle');
-        if (testSuiteToggle && testSuiteToggle.checked) {
-          testSuiteToggle.click();
+        if (closeTestSuite()) {
           observer.disconnect();
         }
       });
       observer.observe(document.documentElement, { childList: true, subtree: true });
 
-      window.setTimeout(function () { observer.disconnect(); }, 8000);
+      window.setTimeout(function () {
+        observer.disconnect();
+      }, 12000);
     })();
   </script>
 </body>
